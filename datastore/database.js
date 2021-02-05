@@ -12,6 +12,7 @@ class Database {
             host: "us-cdbr-east-03.cleardb.com",
             user: "b73c03a81f5dd9",
             password: "47524521",
+            DB: "heroku_375267c7e5b686b"
 
         });
 
@@ -25,7 +26,7 @@ class Database {
 
         this.database.connect((err) => {
             var sql = `
-        CREATE DATABASE IF NOT EXISTS nova_db_gokulakannan_1994`;
+        CREATE DATABASE IF NOT EXISTS heroku_375267c7e5b686b`;
             this.database.query(sql, (err, result) => {
                 if (err) throw err;
                 this.database.destroy()
@@ -33,7 +34,7 @@ class Database {
                     host: "localhost",
                     user: "root",
                     password: "fdsa@1234",
-                    database: "nova_db_gokulakannan_1994"
+                    database: "heroku_375267c7e5b686b"
                 });
 
                 this.database.connect((err) => {
@@ -140,7 +141,7 @@ class Database {
      */
     getCompetitorsList(resolve, reject, { id }) {
         var sql = ` 
-    SELECT * FROM nova_db_gokulakannan_1994.company where industry = (select industry from nova_db_gokulakannan_1994.company where id = (?)) and id != (?) ORDER BY ABS( number_of_employees - (select number_of_employees from nova_db_gokulakannan_1994.company where id = (?)) )  limit 3;
+    SELECT * FROM heroku_375267c7e5b686b.company where industry = (select industry from heroku_375267c7e5b686b.company where id = (?)) and id != (?) ORDER BY ABS( number_of_employees - (select number_of_employees from heroku_375267c7e5b686b.company where id = (?)) )  limit 3;
      
     `;
         this.database.query(sql, [id, id, id], function(err, result) {
