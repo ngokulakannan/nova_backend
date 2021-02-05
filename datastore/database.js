@@ -9,9 +9,9 @@ class Database {
      */
     constructor() {
         this.database = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "fdsa@1234",
+            host: "us-cdbr-east-03.cleardb.com",
+            user: "b73c03a81f5dd9",
+            password: "47524521",
 
         });
 
@@ -25,7 +25,7 @@ class Database {
 
         this.database.connect((err) => {
             var sql = `
-        CREATE DATABASE IF NOT EXISTS nova_db`;
+        CREATE DATABASE IF NOT EXISTS nova_db_gokulakannan_1994`;
             this.database.query(sql, (err, result) => {
                 if (err) throw err;
                 this.database.destroy()
@@ -33,7 +33,7 @@ class Database {
                     host: "localhost",
                     user: "root",
                     password: "fdsa@1234",
-                    database: "nova_db"
+                    database: "nova_db_gokulakannan_1994"
                 });
 
                 this.database.connect((err) => {
@@ -140,7 +140,7 @@ class Database {
      */
     getCompetitorsList(resolve, reject, { id }) {
         var sql = ` 
-    SELECT * FROM nova_db.company where industry = (select industry from nova_db.company where id = (?)) and id != (?) ORDER BY ABS( number_of_employees - (select number_of_employees from nova_db.company where id = (?)) )  limit 3;
+    SELECT * FROM nova_db_gokulakannan_1994.company where industry = (select industry from nova_db_gokulakannan_1994.company where id = (?)) and id != (?) ORDER BY ABS( number_of_employees - (select number_of_employees from nova_db_gokulakannan_1994.company where id = (?)) )  limit 3;
      
     `;
         this.database.query(sql, [id, id, id], function(err, result) {
