@@ -1,7 +1,7 @@
 // imports
 const graphql = require("graphql");
 const db = require("../datastore/database");
-db.create_database()
+//db.create_database()
 
 // User graphql user defined type
 const UserType = new graphql.GraphQLObjectType({
