@@ -58,7 +58,7 @@ class Database {
         id integer PRIMARY KEY AUTO_INCREMENT,
         name text,
         email varchar(100) UNIQUE,
-        company  varchar(100) UNIQUE)`;
+        company  varchar(100) )`;
         this.database.query(sql, function(err, result) {
             if (err) throw err;
         });
