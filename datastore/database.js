@@ -103,13 +103,14 @@ class Database {
      *  
      */
     getCompanyList(resolve, reject) {
-        var sql = `SELECT id,name,website FROM Company;`;
-        this.database.query(sql, function(err, result) {
-            if (err) reject([]);
-            resolve(result);
-            console.log("Table retrieved");
-        });
-
+        this.database.connect((err) => {
+            var sql = `SELECT id,name,website FROM Company;`;
+            this.database.query(sql, function(err, result) {
+                if (err) reject([]);
+                resolve(result);
+                console.log("Table retrieved");
+            });
+        })
     }
 
 
@@ -122,13 +123,13 @@ class Database {
      */
     getCompany(resolve, reject, { id }) {
 
-
-        var sql = `SELECT * FROM Company where id=(?);`;
-        this.database.query(sql, [id], function(err, result) {
-            if (err) reject([]);
-            resolve(result);
-        });
-
+        this.database.connect((err) => {
+            var sql = `SELECT * FROM Company where id=(?);`;
+            this.database.query(sql, [id], function(err, result) {
+                if (err) reject([]);
+                resolve(result);
+            });
+        })
     }
 
 
@@ -140,18 +141,19 @@ class Database {
      * @param  {Object} parameter object
      */
     getCompetitorsList(resolve, reject, { id }) {
-        var sql = ` 
+        this.database.connect((err) => {
+            var sql = ` 
     SELECT * FROM heroku_375267c7e5b686b.company where industry = (select industry from heroku_375267c7e5b686b.company where id = (?)) and id != (?) ORDER BY ABS( number_of_employees - (select number_of_employees from heroku_375267c7e5b686b.company where id = (?)) )  limit 3;
      
     `;
-        this.database.query(sql, [id, id, id], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            resolve(result);
-        });
-
+            this.database.query(sql, [id, id, id], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                resolve(result);
+            });
+        })
     }
 
 
@@ -163,16 +165,16 @@ class Database {
      * @param  {Object} parameter object
      */
     updateCompany(resolve, reject, { name, number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option }) {
-
-        var sql = 'UPDATE company set   number_of_employees = (?), funding_stage = (?), industry = (?), sum_insured = (?), family_covered = (?), parents_covered = (?), maternity_covered = (?), gym_membership = (?), free_doctor_on_call = (?), paid_leaves = (?), flexible_work_timings = (?), remote_option = (?) where name= (?)  ;'
-        this.database.query(sql, [number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option, name], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-            resolve("true");
-        });
-
+        this.database.connect((err) => {
+            var sql = 'UPDATE company set   number_of_employees = (?), funding_stage = (?), industry = (?), sum_insured = (?), family_covered = (?), parents_covered = (?), maternity_covered = (?), gym_membership = (?), free_doctor_on_call = (?), paid_leaves = (?), flexible_work_timings = (?), remote_option = (?) where name= (?)  ;'
+            this.database.query(sql, [number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option, name], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+                resolve("true");
+            });
+        })
     }
 
     /**
@@ -183,17 +185,17 @@ class Database {
      * @param  {Object} parameter object
      */
     createCompany(resolve, reject, { name, website, number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option }) {
+        this.database.connect((err) => {
+            var sql = 'INSERT INTO company ( name, website, number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            this.database.query(sql, [name, website, number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
 
-        var sql = 'INSERT INTO company ( name, website, number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
-        this.database.query(sql, [name, website, number_of_employees, funding_stage, industry, sum_insured, family_covered, parents_covered, maternity_covered, gym_membership, free_doctor_on_call, paid_leaves, flexible_work_timings, remote_option], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-
-            resolve(result);
-        });
-
+                resolve(result);
+            });
+        })
     }
 
     /**
@@ -204,17 +206,17 @@ class Database {
      * @param  {Object} parameter object
      */
     createUser(resolve, reject, { name, email, company }) {
+        this.database.connect((err) => {
+            var sql = 'INSERT INTO user (name, email, company) VALUES (?,?,?);'
+            this.database.query(sql, [name, email, company], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
 
-        var sql = 'INSERT INTO user (name, email, company) VALUES (?,?,?);'
-        this.database.query(sql, [name, email, company], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-
-            resolve(result);
-        });
-
+                resolve(result);
+            });
+        })
     }
 
     /**
@@ -225,17 +227,17 @@ class Database {
      * @param  {Object} parameter object
      */
     checkUser(resolve, reject, { name }) {
+        this.database.connect((err) => {
+            var sql = 'SELECT * FROM   user where name= (?);'
+            this.database.query(sql, [name], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
 
-        var sql = 'SELECT * FROM   user where name= (?);'
-        this.database.query(sql, [name], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-
-            resolve(result);
-        });
-
+                resolve(result);
+            });
+        })
     }
 
     /**
@@ -246,17 +248,17 @@ class Database {
      * @param  {Object} parameter object
      */
     checkEmail(resolve, reject, { email }) {
+        this.database.connect((err) => {
+            var sql = 'SELECT * FROM   user where email= (?);'
+            this.database.query(sql, [email], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
 
-        var sql = 'SELECT * FROM   user where email= (?);'
-        this.database.query(sql, [email], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-
-            resolve(result);
-        });
-
+                resolve(result);
+            });
+        })
     }
 
     /**
@@ -267,17 +269,17 @@ class Database {
      * @param  {Object} parameter object
      */
     checkWebsite(resolve, reject, { website }) {
+        this.database.connect((err) => {
+            var sql = 'SELECT * FROM   company where website= (?);'
+            this.database.query(sql, [website], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
 
-        var sql = 'SELECT * FROM   company where website= (?);'
-        this.database.query(sql, [website], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
-
-            resolve(result);
-        });
-
+                resolve(result);
+            });
+        })
     }
 
     /**
@@ -289,16 +291,17 @@ class Database {
      */
     checkCompany(resolve, reject, { name }) {
         console.log(name);
-        var sql = 'SELECT * FROM   company where name= (?);'
-        this.database.query(sql, [name], function(err, result) {
-            if (err) {
-                console.log(err);
-                reject(err);
-            }
+        this.database.connect((err) => {
+            var sql = 'SELECT * FROM   company where name= (?);'
+            this.database.query(sql, [name], function(err, result) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
 
-            resolve(result);
-        });
-
+                resolve(result);
+            });
+        })
     }
 }
 
