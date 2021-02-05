@@ -31,9 +31,9 @@ class Database {
                 if (err) throw err;
                 this.database.destroy()
                 this.database = mysql.createConnection({
-                    host: "localhost",
-                    user: "root",
-                    password: "fdsa@1234",
+                    host: "us-cdbr-east-03.cleardb.com",
+                    user: "b73c03a81f5dd9",
+                    password: "47524521",
                     database: "heroku_375267c7e5b686b"
                 });
 
